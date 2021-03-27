@@ -51,31 +51,31 @@ function crop_text(string $str, int $length = 300): string
 
     if (strlen($str) < $length) {
         return $str;
-    } else {
-        foreach ($text_arr as $item) {
-            if ($count_all <= $length) {
-                $count_all += strlen($item);
-                $count++;
-            } 
-            $array = array_slice($text_arr, 0, $count);
-            $content = implode(" ", $array);
+    }
+    foreach ($text_arr as $item) {
+
+        if ($count_all >= $length) {
+            break;
         }
-       
-    } 
+        $count_all += strlen($item) + 1;
+        $count++;
+
+    }
+
+    $array = array_slice($text_arr, 0, $count);
+    $content = implode(" ", $array);
 
     return $content;
 }
 
 function prepare_card_text(string $input, int $length = 300): string
 {
-    crop_text($input, $length);
-
     if (strlen($input) < $length) {
         return $input;
     }
 
     $text = crop_text($input, $length);
-    $text = $text . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    $text .= '<a class="post-text__more-link" href="#">Читать далее</a>';
     return $text;
 }
 ?>
