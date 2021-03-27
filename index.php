@@ -44,7 +44,6 @@ $articles = [
 
 function crop_text(string $str, int $length = 300): string
 {
-    $content = '';
     $count_all = 0;
     $count = 0;
     $text_arr = explode(' ', $str);
@@ -74,7 +73,7 @@ function prepare_card_text(string $input, int $length = 300): string
         return $input;
     }
 
-    $text = crop_text($input, $length);
+    $text = '<p>' . crop_text($input, $length) . '</p>';
     $text .= '<a class="post-text__more-link" href="#">Читать далее</a>';
     return $text;
 }
