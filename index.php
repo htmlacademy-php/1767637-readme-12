@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 $is_auth = rand(0, 1);
 
@@ -39,7 +40,43 @@ $articles = [
         'user_name' => 'Владик',
         'avatar' => 'userpic.jpg'
     ]
-]
+];
+
+function crop_text(string $str, int $length = 300): string
+{
+    $count_all = 0;
+    $count = 0;
+    $text_arr = explode(' ', $str);
+
+    if (strlen($str) < $length) {
+        return $str;
+    }
+    foreach ($text_arr as $item) {
+
+        if ($count_all >= $length) {
+            break;
+        }
+        $count_all += strlen($item) + 1;
+        $count++;
+
+    }
+
+    $array = array_slice($text_arr, 0, $count);
+    $content = implode(" ", $array);
+
+    return $content;
+}
+
+function prepare_card_text(string $input, int $length = 300): string
+{
+    if (strlen($input) < $length) {
+        return $input;
+    }
+
+    $text = '<p>' . crop_text($input, $length) . '</p>';
+    $text .= '<a class="post-text__more-link" href="#">Читать далее</a>';
+    return $text;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -323,7 +360,7 @@ $articles = [
                             <?php if ($article['type'] === 'post-text') : ?>
                                 <p>
                                     <!--здесь текст-->
-                                    <?= $article['content'] ?? ''; ?>
+                                    <?= prepare_card_text($article['content'] ?? ''); ?>
                                 </p>
                             <?php elseif ($article['type'] === 'post-photo') : ?>
                                 <!--содержимое для поста-фото-->
