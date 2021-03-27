@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 $is_auth = rand(0, 1);
 
@@ -41,27 +42,41 @@ $articles = [
     ]
 ];
 
-function crop_text($str, $length = 300) {
+function crop_text(string $str, int $length = 300): string
+{
     $content = '';
     $count_all = 0;
     $count = 0;
     $text_arr = explode(' ', $str);
-    if(strlen($str) > $length ) {
+
+    if (strlen($str) < $length) {
+        return $str;
+    } else {
         foreach ($text_arr as $item) {
             if ($count_all <= $length) {
                 $count_all += strlen($item);
                 $count++;
-            } else {
-                $array = array_slice($text_arr, 0, $count);
-                $content = implode(" ", $array);
-            }
+            } 
+            $array = array_slice($text_arr, 0, $count);
+            $content = implode(" ", $array);
+        }
+       
+    } 
 
-       }
-        $content = $content . '<a class="post-text__more-link" href="#">Читать далее</a>';
-    } else {
-        $content = $str; 
-    };
     return $content;
+}
+
+function prepare_card_text(string $input, int $length = 300): string
+{
+    crop_text($input, $length);
+
+    if (strlen($input) < $length) {
+        return $input;
+    }
+
+    $text = crop_text($input, $length);
+    $text = $text . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    return $text;
 }
 ?>
 <!DOCTYPE html>
@@ -346,8 +361,7 @@ function crop_text($str, $length = 300) {
                             <?php if ($article['type'] === 'post-text') : ?>
                                 <p>
                                     <!--здесь текст-->
-                                    <?php $text_new = $article['content'] ?? '';
-                                    echo crop_text($text_new);?>
+                                    <?= prepare_card_text($article['content'] ?? ''); ?>
                                 </p>
                             <?php elseif ($article['type'] === 'post-photo') : ?>
                                 <!--содержимое для поста-фото-->
