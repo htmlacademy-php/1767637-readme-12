@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 $is_auth = rand(0, 1);
 
 $user_name = 'Ann'; // укажите здесь ваше имя
@@ -307,29 +308,30 @@ $articles = [
                     </ul>
                 </div>
             </div>
-            <?php foreach ($articles as $article) : ?>
-                <div class="popular__posts">
-                    <article class="popular__post post <?= $article['type']; ?>">
+            <div class="popular__posts">
+                <?php foreach ($articles as $article) : ?>
+
+                    <article class="popular__post post <?= $article['type'] ?? ''; ?>">
                         <header class="post__header">
                             <h2>
                                 <!--здесь заголовок-->
-                                <?= $article['title']; ?>
+                                <?= $article['title'] ?? ''; ?>
                             </h2>
                         </header>
                         <div class="post__main">
                             <!--здесь содержимое карточки-->
-                            <?php if ($article['type'] == 'post-text') { ?>
+                            <?php if ($article['type'] === 'post-text') : ?>
                                 <p>
                                     <!--здесь текст-->
-                                    <?= $article['content']; ?>
+                                    <?= $article['content'] ?? ''; ?>
                                 </p>
-                            <?php } elseif ($article['type'] == 'post-photo') { ?>
+                            <?php elseif ($article['type'] === 'post-photo') : ?>
                                 <!--содержимое для поста-фото-->
                                 <div class="post-photo__image-wrapper">
-                                    <img src="img/<?= $article['content']; ?>" alt="Фото от пользователя" width="360" height="240">
+                                    <img src="img/<?= $article['content'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
                                 </div>
-                            <?php } elseif ($article['type'] == 'post-link') { ?>
-                                <a class="post-link__external" href="http://<?= $article['content']; ?>" title="Перейти по ссылке">
+                            <?php elseif ($article['type'] === 'post-link') : ?>
+                                <a class="post-link__external" href="http://<?= $article['content'] ?? ''; ?>" title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -337,19 +339,18 @@ $articles = [
                                     </div>
                                     <span>
                                         <!--здесь ссылка-->
-                                        <?= $article['content']; ?>
+                                        <?= $article['content'] ?? ''; ?>
                                     </span>
                                 </a>
-                            <?php  } elseif ($article['type'] == 'post-quote') { ?>
+                            <?php elseif ($article['type'] === 'post-quote') : ?>
                                 <blockquote>
                                     <p>
                                         <!--здесь текст-->
-                                        <?= $article['content']; ?>
+                                        <?= $article['content'] ?? ''; ?>
                                     </p>
                                 </blockquote>
 
-                            <?php  }
-                            ?>
+                            <?php endif;   ?>
                         </div>
                         <footer class="post__footer">
                             <div class="post__author">
@@ -390,8 +391,8 @@ $articles = [
                             </div>
                         </footer>
                     </article>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </section>
 
