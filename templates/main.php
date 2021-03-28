@@ -85,6 +85,7 @@
                 </div>
             </div>
             <div class="popular__posts">
+                <?php $i = 1; ?>
                 <?php foreach ($articles as $article) : ?>
 
                     <article class="popular__post post <?= $article['type'] ?? ''; ?>">
@@ -140,7 +141,91 @@
                                             <!--здесь имя пользоателя-->
                                             <?= $article['user_name']; ?>
                                         </b>
-                                        <time class="post__time" datetime="">дата</time>
+                                        <?php
+                                            $time  = time() - strtotime(generate_random_date($i));
+                                            $time = ($time < 1) ? 1 : $time;
+
+                                            $minutes_plus = array(' минута ', ' минуты ', ' минут ');
+                                            $hours_plus = array(' час ', ' часа ', ' часов ');
+                                            $days_plus = array(' день ', ' дня ', ' дней ');
+                                            $weeks_plus = array(' неделя ', ' недели ', ' недель ');
+                                            $months_plus = array(' месяц ', ' месяца ', ' месяцев ');
+                                            $years_plus = array(' год ', ' года ', ' лет ');
+
+                                            $years = floor($time / 31536000);
+                                            $months = floor(($time / 2592000) % 360);
+                                            $weeks = floor(($time / 604800) % 12);
+                                            $days =   floor(($time / 86400) % 7);
+                                            $hours =  floor(($time / 3600) % 7);
+                                            $minutes = floor(($time / 60) % 24);
+
+                                            $months = ltrim($months, 0);
+                                            $weeks = ltrim($weeks, 0);
+                                            $days = ltrim($days, 0);
+                                            $hours = ltrim($hours, 0);
+                                            $minutes = ltrim($minutes, 0);
+
+                                            if ($years < 1 ) :
+                                              $years = '';
+                                            elseif ($years > 4 ) :
+                                                $years .= $years_plus[2];
+                                            elseif ($years === 1) :
+                                                $years .= $years_plus[0];
+                                            else :
+                                                $years .= $years_plus[1];
+                                            endif;
+
+                                            if ($months< 1) :
+                                                $$months = '';
+                                            elseif ($months > 4) :
+                                                $months .= $months_plus[2];
+                                            elseif ($months === 1) :
+                                                $months .= $months_plus[0];
+                                            else :
+                                                $months .= $months_plus[1];
+                                            endif;
+
+                                            if ($days < 1) :
+                                                $days = '';
+                                            elseif ($days > 4) :
+                                                $days .= $days_plus[2];
+                                            elseif ($days === 1) :
+                                                $days .= $days_plus[0];
+                                            else :
+                                                $days .= $days_plus[1];
+                                            endif;
+
+                                            if ($weeks < 1) :
+                                                $weeks = '';
+                                            elseif ($weeks > 4) :
+                                                $weeks .= $weeks_plus[2];
+                                            elseif ($weeks === 1) :
+                                                $weeks .= $weeks_plus[0];
+                                            else :
+                                                $weeks .= $weeks_plus[1];
+                                            endif;
+
+                                            if ($hours < 1) :
+                                                $hours = '';
+                                            elseif ($hours > 4) :
+                                                $hours .= $hours_plus[2];
+                                            elseif ($hours === 1) :
+                                                $hours .= $hours_plus[0];
+                                            else :
+                                                $hours .= $hours_plus[1];
+                                            endif;
+
+                                            if ($minutes < 1) :
+                                                $minutes = '';
+                                            elseif ($minutes > 4) :
+                                                $minutes .= $minutes_plus[2];
+                                            elseif ($minutes === 1) :
+                                                $minutes .= $minutes_plus[0];
+                                            else :
+                                                $minutes .= $minutes_plus[1];
+                                            endif;
+                                        ?>
+                                        <time class="post__time" datetime="<?= $time; ?>" title="<?= generate_random_date($i); ?>"><?= $years  . $months . $weeks . $days . $hours . $minutes; ?></time>
                                     </div>
                                 </a>
                             </div>
@@ -167,6 +252,7 @@
                             </div>
                         </footer>
                     </article>
+                    <?php $i++; ?>
                 <?php endforeach; ?>
             </div>
         </div>
