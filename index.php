@@ -7,89 +7,41 @@ $title = 'readme: популярное';
 
 $user_name = 'Ann'; // укажите здесь ваше имя
 
-function get_time($i)
-{
-    $time  = time() - strtotime(generate_random_date($i));
-    $time = ($time < 1) ? 1 : $time;
-
-    $years = floor($time / 31536000);
-    $months = floor(($time / 2592000) % 360);
-    $weeks = floor(($time / 604800) % 12);
-    $days = floor(($time / 86400) % 7);
-    $hours =  floor(($time / 3600) % 7);
-    $minutes = floor(($time / 60) % 24);
-
-    if($time / 31536000 > 0) {
-        $years = floor($time / 31536000);
-        //$years = ltrim($years, "0");
-        $time_arr = array('years' => $years );
-    } elseif ($time / 2592000 > 0) {
-        $months = floor(($time / 2592000) % 360);
-        //$months = ltrim($months, "0");
-        $time_arr = array('months' => $months);
-    } elseif ($time / 604800 > 0 && $time / 31536000 < 0 ) {
-        $weeks = floor(($time / 604800) % 12);
-       // $weeks = ltrim($weeks, "0");
-        $time_arr = array('weeks' => $weeks);
-    } elseif ($time / 86400 > 0 && $time / 2592000 < 0 ) {
-        $days = floor(($time / 86400) % 7);
-       // $days = ltrim($days, "0");
-        $time_arr = array('days' => $days);
-    } elseif ($time / 60 > 0 && $time / 604800 < 0) {
-        $days = floor(($time / 86400) % 7);
-        //$minutes = ltrim($minutes, "0");
-        $time_arr = array('minutes' => $minutes);
-    }
-    
-    return $time_arr;
-}
-function view_time($i)
-{
-    $time_arr = get_time($i);
-    extract($time_arr);
-    return $years . $months . $weeks . $days . $hours . $minutes;
-}
-
 $articles = [
     [
         'title' => 'Цитата',
         'type' => 'post-quote',
         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
         'user_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-        'time' => view_time(0)
+        'avatar' => 'userpic-larisa-small.jpg'
     ],
     [
         'title' => 'Игра престолов',
         'type' => 'post-text',
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'user_name' => 'Владик',
-        'avatar' => 'userpic.jpg',
-        'time' => view_time(1)
+        'avatar' => 'userpic.jpg'
     ],
     [
         'title' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
         'content' => 'rock-medium.jpg',
         'user_name' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg',
-        'time' => view_time(2)
+        'avatar' => 'userpic-mark.jpg'
     ],
     [
         'title' => 'Моя мечта',
         'type' => 'post-photo',
         'content' => 'coast-medium.jpg',
         'user_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-        'time' => view_time(3)
+        'avatar' => 'userpic-larisa-small.jpg'
     ],
     [
         'title' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru',
         'user_name' => 'Владик',
-        'avatar' => 'userpic.jpg',
-        'time' => view_time(4)
+        'avatar' => 'userpic.jpg'
     ]
 ];
 
