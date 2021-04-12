@@ -1,4 +1,8 @@
-    <section class="page__main page__main--popular">
+    
+<?php
+include_once 'functions/format_time.php';
+?>
+<section class="page__main page__main--popular">
         <div class="container">
             <h1 class="page__title page__title--popular">Популярное</h1>
         </div>
@@ -85,7 +89,7 @@
                 </div>
             </div>
             <div class="popular__posts">
-                <?php foreach ($articles as $article) : ?>
+                <?php foreach ($articles as $i => $article) : ?>
 
                     <article class="popular__post post <?= $article['type'] ?? ''; ?>">
                         <header class="post__header">
@@ -140,7 +144,7 @@
                                             <!--здесь имя пользоателя-->
                                             <?= $article['user_name']; ?>
                                         </b>
-                                        <time class="post__time" datetime="">дата</time>
+                                        <time class="post__time" datetime="<?= strtotime($article['date']); ?>" title="<?= $article['date']; ?>"><?= format_time($article['date']) . ' назад'; ?></time>
                                     </div>
                                 </a>
                             </div>
@@ -167,6 +171,7 @@
                             </div>
                         </footer>
                     </article>
+                    <?php $i++; ?>
                 <?php endforeach; ?>
             </div>
         </div>
