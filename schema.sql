@@ -2,10 +2,13 @@ CREATE DATABASE `myDB`;
 CREATE TABLE `posts`
 (
     `id` INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `post_type` VARCHAR (50) NOT NULL,
     `title` VARCHAR (100) NOT NULL,
     `content` VARCHAR (250) NOT NULL,
-    `user_id` INT (6) NOT NULL,
+    `author_id` INT (6) NOT NULL,
     `cat_id` INT (6) NOT NULL,
+    `comment_count` INT (20) DEFAULT `0` ,
+    `like_count` INT (20) DEFAULT `0` ,
     `reg_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
@@ -23,5 +26,15 @@ CREATE TABLE `category`
     `cat_id` INT (6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR (100) NOT NULL,
     `count_posts` INT (100) NOT NULL
+
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+
+CREATE TABLE `comment`
+(
+    `comment_ID` INT (6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `comment_post_ID` INT (100) NOT NULL,
+    `user_id` INT (6) NOT NULL,
+    `comment_content` VARCHAR (250) NOT NULL,
+    `comment_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
