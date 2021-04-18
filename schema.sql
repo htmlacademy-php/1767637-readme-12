@@ -1,40 +1,97 @@
 CREATE DATABASE `myDB`;
 CREATE TABLE `posts`
 (
-    `id` INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `post_type` VARCHAR (50) NOT NULL,
+    `id` INT  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `post_type_id` VARCHAR (50) NOT NULL,
     `title` VARCHAR (100) NOT NULL,
-    `content` VARCHAR (250) NOT NULL,
+    `excerpt` VARCHAR (150) NOT NULL,
+    `content` TEXT NOT NULL,
+    `url` VARCHAR (100) NOT NULL,
+    `image_url` VARCHAR (100) NOT NULL,
+    `video_url` VARCHAR (100) NOT NULL,
     `author_id` INT (6) NOT NULL,
     `cat_id` INT (6) NOT NULL,
-    `comment_count` INT (20) DEFAULT `0` ,
-    `like_count` INT (20) DEFAULT `0` ,
-    `reg_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+    `hashtags_id` INT (6) NOT NULL,
+    `comment_count` INT (20) DEFAULT 0 ,
+    `views_number` INT (20) DEFAULT 0 ,
+    `date_create` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`author_id`)  REFERENCES `users` (`id`) ON UPDATE CASCADE,
+    FOREIGN KEY (`cat_id`)  REFERENCES `category` (`id`) ON UPDATE CASCADE,
+    FOREIGN KEY (`post_type_id`)  REFERENCES `post_type` (`id`) ON UPDATE CASCADE,
+    FOREIGN KEY (`hashtags_id`)  REFERENCES `hashtags` (`id`) ON UPDATE CASCADE
+
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `users`
 (
-    `user_id` INT (6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `email` VARCHAR (50) NOT NULL ,
     `login` VARCHAR (50) NOT NULL,
-    `password` VARCHAR (100) NOT NULL
+    `password` VARCHAR (100) NOT NULL,
+    `avatar` VARCHAR (100),
+    `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `category`
 (
-    `cat_id` INT (6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR (100) NOT NULL,
-    `count_posts` INT (100) NOT NULL
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR (100) NOT NULL
 
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `post_type`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR (100) NOT NULL
+
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `hashtags`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR (100) NOT NULL
+
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `user_post_like`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+   ` user_id` INT,
+    `post_id` INT,
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+    FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `comment`
 (
-    `comment_ID` INT (6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `comment_post_ID` INT (100) NOT NULL,
     `user_id` INT (6) NOT NULL,
     `comment_content` VARCHAR (250) NOT NULL,
-    `comment_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `comment_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`)  REFERENCES `users` (`id`)ON UPDATE CASCADE,
+    FOREIGN KEY (`comment_post_ID`)  REFERENCES `posts` (`id`) ON UPDATE CASCADE
 
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE   `subscription`
+(
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `follower_id`  INT (6) NOT NULL,
+    `user_id`  INT NOT NULL,
+    FOREIGN KEY (follower_id) REFERENCES users (id) ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `message`
+(
+    `id` INT NOT NULL,
+    `message_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `message_text`      TEXT,
+    `sender_id`    INT (6) NOT NULL,
+    `recipient_id` INT (6) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE,
+    FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
