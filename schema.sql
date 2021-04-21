@@ -47,10 +47,10 @@ CREATE TABLE `posts`
     `comment_count` INT (20) DEFAULT 0 ,
     `views_number` INT (20) DEFAULT 0 ,
     `date_create` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`author_id`)  REFERENCES `users` (`id`),
-    FOREIGN KEY (`cat_id`)  REFERENCES `category` (`id`),
-    FOREIGN KEY (`post_type_id`)  REFERENCES `post_type` (`id`),
-    FOREIGN KEY (`hashtags_id`)  REFERENCES `hashtags` (`id`)
+    FOREIGN KEY (`author_id`)  REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (`cat_id`)  REFERENCES `category` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (`post_type_id`)  REFERENCES `post_type` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (`hashtags_id`)  REFERENCES `hashtags` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
@@ -59,21 +59,19 @@ CREATE TABLE `user_post_like`
     `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT UNSIGNED NOT NULL,
     `post_id` INT UNSIGNED NOT NULL,
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    FOREIGN KEY
-(`post_id`) REFERENCES `posts`
-(`id`)
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `comment`
 (
     `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `comment_post_ID` INT UNSIGNED NOT NULL,
+    `post_ID` INT UNSIGNED NOT NULL,
     `user_id` INT UNSIGNED NOT NULL,
-    `comment_content` VARCHAR (250) NOT NULL,
-    `comment_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`user_id`)  REFERENCES `users` (`id`)ON UPDATE CASCADE,
-    FOREIGN KEY (`comment_post_ID`)  REFERENCES `posts` (`id`)
+    `content` VARCHAR (250) NOT NULL,
+    `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`user_id`)  REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (`post_ID`)  REFERENCES `posts` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
@@ -93,6 +91,6 @@ CREATE TABLE `message`
     `message_text`      TEXT,
     `sender_id` INT UNSIGNED NOT NULL,
     `recipient_id` INT UNSIGNED NOT NULL,
-    FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`),
-    FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`)
+    FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
