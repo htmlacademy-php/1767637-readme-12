@@ -7,48 +7,24 @@ $title = 'readme: популярное';
 
 $user_name = 'Ann'; // укажите здесь ваше имя
 
-$articles = [
-    [
-        'title' => 'Цитата',
-        'type' => 'post-quote',
-        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-        'user_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-        'date' => generate_random_date(0)
-    ],
-    [
-        'title' => 'Игра престолов',
-        'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'user_name' => 'Владик',
-        'avatar' => 'userpic.jpg',
-        'date' => generate_random_date(1)
-    ],
-    [
-        'title' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'content' => 'rock-medium.jpg',
-        'user_name' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg',
-        'date' => generate_random_date(2)
-    ],
-    [
-        'title' => 'Моя мечта',
-        'type' => 'post-photo',
-        'content' => 'coast-medium.jpg',
-        'user_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-        'date' => generate_random_date(3)
-    ],
-    [
-        'title' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'content' => 'www.htmlacademy.ru',
-        'user_name' => 'Владик',
-        'avatar' => 'userpic.jpg',
-        'date' => generate_random_date(4)
-    ]
-];
+$con = mysqli_connect("localhost", "root", "", "myDB");
+if (!$con) {
+    $error = mysqli_connect_error();
+    show_error($con, $error);
+} else {
+    $sql = 'SELECT * FROM posts p 
+        JOIN users u ON p.author_id = u.id
+        JOIN post_type t ON p.post_type_id = t.id
+        ORDER BY views_number ASC';
+
+    $result = mysqli_query($con, $sql);
+
+    if ($result) {
+        $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        show_error($con, mysqli_error($result));
+    }
+}
 
 function crop_text(string $str, int $length = 300): string
 {
@@ -86,6 +62,6 @@ function prepare_card_text(string $input, int $length = 300): string
     return $text;
 }
 
-$main = include_template('main.php', array('articles'=> $articles));
+$main = include_template('main.php', array('articles'=> $posts, 'post_type' => $post_type));
 
 print include_template('layout.php', array('main' => $main, 'user_name' => $user_name,'title' => $title ));

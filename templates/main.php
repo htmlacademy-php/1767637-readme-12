@@ -1,8 +1,7 @@
-    
-<?php
-include_once 'functions/format_time.php';
-?>
-<section class="page__main page__main--popular">
+    <?php
+    include_once 'functions/format_time.php';
+    ?>
+    <section class="page__main page__main--popular">
         <div class="container">
             <h1 class="page__title page__title--popular">Популярное</h1>
         </div>
@@ -91,7 +90,7 @@ include_once 'functions/format_time.php';
             <div class="popular__posts">
                 <?php foreach ($articles as $i => $article) : ?>
 
-                    <article class="popular__post post <?= $article['type'] ?? ''; ?>">
+                    <article class="popular__post post <?= $article['post_type_id'] ?? ''; ?>">
                         <header class="post__header">
                             <h2>
                                 <!--здесь заголовок-->
@@ -100,18 +99,18 @@ include_once 'functions/format_time.php';
                         </header>
                         <div class="post__main">
                             <!--здесь содержимое карточки-->
-                            <?php if ($article['type'] === 'post-text') : ?>
+                            <?php if ($article['post_type_id'] === '2') : ?>
                                 <p>
                                     <!--здесь текст-->
                                     <?= prepare_card_text($article['content'] ?? ''); ?>
                                 </p>
-                            <?php elseif ($article['type'] === 'post-photo') : ?>
+                            <?php elseif ($article['post_type_id'] === '3') : ?>
                                 <!--содержимое для поста-фото-->
                                 <div class="post-photo__image-wrapper">
-                                    <img src="img/<?= $article['content'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
+                                    <img src="/img/<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
                                 </div>
-                            <?php elseif ($article['type'] === 'post-link') : ?>
-                                <a class="post-link__external" href="http://<?= $article['content'] ?? ''; ?>" title="Перейти по ссылке">
+                            <?php elseif ($article['post_type_id'] === '4') : ?>
+                                <a class="post-link__external" href="http://<?= $article['url'] ?? ''; ?>" title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -122,11 +121,11 @@ include_once 'functions/format_time.php';
                                         <?= $article['content'] ?? ''; ?>
                                     </span>
                                 </a>
-                            <?php elseif ($article['type'] === 'post-quote') : ?>
+                            <?php elseif ($article['post_type_id'] === '1') : ?>
                                 <blockquote>
                                     <p>
                                         <!--здесь текст-->
-                                        <?= $article['content'] ?? ''; ?>
+                                        <?= $article['url'] ?? ''; ?>
                                     </p>
                                 </blockquote>
 
@@ -137,14 +136,16 @@ include_once 'functions/format_time.php';
                                 <a class="post__author-link" href="#" title="Автор">
                                     <div class="post__avatar-wrapper">
                                         <!--укажите путь к файлу аватара-->
-                                        <img class="post__author-avatar" src="img/<?= $article['avatar']; ?>" alt="Аватар пользователя">
+                                        <?php if (isset($article['avatar']) && !empty($article['avatar'])) : ?>
+                                            <img class="post__author-avatar" src="img/<?= $article['avatar']; ?>" alt="Аватар пользователя">
+                                        <?php endif; ?>
                                     </div>
                                     <div class="post__info">
                                         <b class="post__author-name">
                                             <!--здесь имя пользоателя-->
-                                            <?= $article['user_name']; ?>
+                                            <?= $article['login']; ?>
                                         </b>
-                                        <time class="post__time" datetime="<?= strtotime($article['date']); ?>" title="<?= $article['date']; ?>"><?= format_time($article['date']) . ' назад'; ?></time>
+                                        <time class="post__time" datetime="<?= strtotime($article['date_create']); ?>" title="<?= $article['date_create']; ?>"><?= format_time($article['date_create']) . ' назад'; ?></time>
                                     </div>
                                 </a>
                             </div>
