@@ -99,17 +99,17 @@
                         </header>
                         <div class="post__main">
                             <!--здесь содержимое карточки-->
-                            <?php if ($article['post_type_id'] === '2') : ?>
+                            <?php if ($article['name'] === 'post-text') : ?>
                                 <p>
                                     <!--здесь текст-->
                                     <?= prepare_card_text($article['content'] ?? ''); ?>
                                 </p>
-                            <?php elseif ($article['post_type_id'] === '3') : ?>
+                            <?php elseif ($article['name'] === 'post-photo') : ?>
                                 <!--содержимое для поста-фото-->
                                 <div class="post-photo__image-wrapper">
                                     <img src="/img/<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
                                 </div>
-                            <?php elseif ($article['post_type_id'] === '4') : ?>
+                            <?php elseif ($article['name'] === 'post-link') : ?>
                                 <a class="post-link__external" href="http://<?= $article['url'] ?? ''; ?>" title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
@@ -121,7 +121,7 @@
                                         <?= $article['content'] ?? ''; ?>
                                     </span>
                                 </a>
-                            <?php elseif ($article['post_type_id'] === '1') : ?>
+                            <?php elseif ($article['name'] === 'post-quote') : ?>
                                 <blockquote>
                                     <p>
                                         <!--здесь текст-->
