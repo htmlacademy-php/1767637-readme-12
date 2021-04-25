@@ -15,11 +15,10 @@ $sql = 'SELECT * FROM posts p
 
 $result = mysqli_query($con, $sql);
 
-if ($result) {
-    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
+if (!$result) {
     show_error($con, mysqli_error($result));
 }
+$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 function crop_text(string $str, int $length = 300): string
 {

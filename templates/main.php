@@ -1,4 +1,4 @@
-    <?php
+<?php
     include_once 'functions/format_time.php';
     ?>
     <section class="page__main page__main--popular">
