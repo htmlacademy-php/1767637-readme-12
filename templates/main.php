@@ -1,5 +1,6 @@
 <?php
 include_once 'functions/format_time.php';
+include_once 'functions/htmlspecialchars.php';
 ?>
 <section class="page__main page__main--popular">
     <div class="container">
@@ -40,16 +41,12 @@ include_once 'functions/format_time.php';
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php if (!isset($_GET['post_type']) || empty($_GET['post_type'])) {
-                                                                                                    echo 'filters__button--active';
-                                                                                                } ?>" href="/">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?= !isset($_GET['post_type']) || empty($_GET['post_type']) ? 'filters__button--active' : '' ?>" href="/">
                             <span>Все</span>
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button <?php if ( isset($_GET['post_type']) && $_GET['post_type'] === 'post-photo') {
-                                                                                    echo 'filters__button--active';
-                                                                                } ?>" href="?post_type=post-photo">
+                        <a class="filters__button filters__button--photo button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-photo' ? 'filters__button--active' : ''; ?>" href="?post_type=post-photo">
                             <span class="visually-hidden">Фото</span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-photo"></use>
@@ -57,9 +54,7 @@ include_once 'functions/format_time.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button <?php if (isset($_GET['post_type']) && $_GET['post_type'] === 'post-video') {
-                                                                                    echo 'filters__button--active';
-                                                                                } ?>" href="?post_type=post-video">
+                        <a class="filters__button filters__button--video button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-video' ? 'filters__button--active' : ''; ?>" href="?post_type=post-video">
                             <span class="visually-hidden">Видео</span>
                             <svg class="filters__icon" width="24" height="16">
                                 <use xlink:href="#icon-filter-video"></use>
@@ -67,9 +62,7 @@ include_once 'functions/format_time.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button <?php if (isset($_GET['post_type']) && $_GET['post_type'] === 'post-text') {
-                                                                                    echo 'filters__button--active';
-                                                                                } ?>" href="?post_type=post-text">
+                        <a class="filters__button filters__button--text button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-text' ? 'filters__button--active' : ''; ?>" href="?post_type=post-text">
                             <span class="visually-hidden">Текст</span>
                             <svg class="filters__icon" width="20" height="21">
                                 <use xlink:href="#icon-filter-text"></use>
@@ -77,9 +70,7 @@ include_once 'functions/format_time.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button <?php if (isset($_GET['post_type']) && $_GET['post_type'] === 'post-quote') {
-                                                                                    echo 'filters__button--active';
-                                                                                } ?>" href="?post_type=post-quote">
+                        <a class="filters__button filters__button--quote button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-quote' ? 'filters__button--active' : '' ; ?>" href="?post_type=post-quote">
                             <span class="visually-hidden">Цитата</span>
                             <svg class="filters__icon" width="21" height="20">
                                 <use xlink:href="#icon-filter-quote"></use>
@@ -87,9 +78,7 @@ include_once 'functions/format_time.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button <?php if (isset($_GET['post_type']) && $_GET['post_type'] === 'post-link') {
-                                                                                    echo 'filters__button--active';
-                                                                                } ?>" href="?post_type=post-link">
+                        <a class="filters__button filters__button--link button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-link' ? 'filters__button--active' : '' ; ?>" href="?post_type=post-link">
                             <span class="visually-hidden">Ссылка</span>
                             <svg class="filters__icon" width="21" height="18">
                                 <use xlink:href="#icon-filter-link"></use>
@@ -100,13 +89,13 @@ include_once 'functions/format_time.php';
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($articles as $i => $article) : ?>
+            <?php foreach ($articles as $article) : ?>
 
-                <article class="popular__post post <?= $article['post_type_id'] ?? ''; ?>">
+                <article class="popular__post post <?= html($article['post_type_id']) ?? ''; ?>">
                     <header class="post__header">
                         <h2>
                             <!--здесь заголовок-->
-                            <a href="/post.php?id=<?= $article['id']; ?>"><?= $article['title'] ?? ''; ?></a>
+                            <a href="/post.php?id=<?= $article['id']; ?>"><?= html($article['title']) ?? ''; ?></a>
                         </h2>
                     </header>
                     <div class="post__main">
@@ -129,14 +118,14 @@ include_once 'functions/format_time.php';
                                     </div>
                                 </div>
                                 <span>
-                                    <!--здесь ссылка-->
-                                    <?= $article['content'] ?? ''; ?>
+                                    <!--здесь текст-->
+                                    <?= html($article['content']) ?? ''; ?>
                                 </span>
                             </a>
                         <?php elseif ($article['name'] === 'post-quote') : ?>
                             <blockquote>
                                 <p>
-                                    <!--здесь текст-->
+                                    <!--здесь ссылка-->
                                     <?= $article['url'] ?? ''; ?>
                                 </p>
                             </blockquote>
@@ -155,7 +144,7 @@ include_once 'functions/format_time.php';
                                 <div class="post__info">
                                     <b class="post__author-name">
                                         <!--здесь имя пользоателя-->
-                                        <?= $article['login']; ?>
+                                        <?= html($article['login']); ?>
                                     </b>
                                     <time class="post__time" datetime="<?= strtotime($article['date_create']); ?>" title="<?= $article['date_create']; ?>"><?= format_time($article['date_create']) . ' назад'; ?></time>
                                 </div>
@@ -184,7 +173,6 @@ include_once 'functions/format_time.php';
                         </div>
                     </footer>
                 </article>
-                <?php $i++; ?>
             <?php endforeach; ?>
         </div>
     </div>

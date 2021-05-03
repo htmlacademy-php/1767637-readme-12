@@ -1,6 +1,9 @@
+<?php
+include_once 'functions/format_time.php';
+include_once 'functions/htmlspecialchars.php';
+?>
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -176,7 +179,7 @@
         <div class="container">
             <h1 class="page__title page__title--publication"><?= $post['title']; ?></h1>
             <section class="post-details">
-                <h2 class="visually-hidden"><?= $post['name']; ?></h2>
+                <h2 class="visually-hidden"><?= html($post['name']); ?></h2>
                 <div class="post-details__wrapper post-photo">
                     <div class="post-details__main-block post post--details">
                         <?php if (isset($post['image_url']) && !empty($post['image_url'])) : ?>
@@ -214,7 +217,7 @@
                             <span class="post__view"><?= $post['views_number']; ?> просмотров</span>
                         </div>
                         <ul class="post__tags">
-                            <li><a href="#">#<?= $post['name'] ?? ''; ?></a></li>
+                            <li><a href="#">#<?= html($post['name']) ?? ''; ?></a></li>
                         </ul>
                         <div class="comments">
                             <form class="comments__form form" action="#" method="post">
@@ -236,25 +239,25 @@
                                 <?php if (count($post_comments) > 0) : ?>
                                     <ul class="comments__list">
                                         <?php foreach ($post_comments as $key => $post_comment) : ?>
-                                                <li class="comments__item user">
-                                                    <div class="comments__avatar">
-                                                        <a class="user__avatar-link" href="#">
-                                                            <img class="comments__picture" src="img/<?= $post_comment['avatar']; ?>" alt="Аватар пользователя">
+                                            <li class="comments__item user">
+                                                <div class="comments__avatar">
+                                                    <a class="user__avatar-link" href="#">
+                                                        <img class="comments__picture" src="img/<?= $post_comment['avatar']; ?>" alt="Аватар пользователя">
+                                                    </a>
+                                                </div>
+                                                <div class="comments__info">
+                                                    <div class="comments__name-wrapper">
+                                                        <a class="comments__user-name" href="/?<?= $post_comment['user_id'] ?>">
+                                                            <span><?= html($post_comment['login']); ?></span>
                                                         </a>
+                                                        <time class="comments__time" datetime="<?= $post_comment['date']; ?>"><?= format_time($post_comment['date']); ?> назад</time>
                                                     </div>
-                                                    <div class="comments__info">
-                                                        <div class="comments__name-wrapper">
-                                                            <a class="comments__user-name" href="/?<?= $post_comment['user_id'] ?>">
-                                                                <span><?= $post_comment['login']; ?></span>
-                                                            </a>
-                                                            <time class="comments__time" datetime="<?= $post_comment['date']; ?>"><?= format_time($post_comment['date']); ?> назад</time>
-                                                        </div>
-                                                        <p class="comments__text">
-                                                            <?= $post_comment['content']; ?>
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                         <?php endforeach; ?>
+                                                    <p class="comments__text">
+                                                        <?= html($post_comment['content']); ?>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        <?php endforeach; ?>
                                     </ul>
                                 <?php endif; ?>
                                 <?php if ($count_comment > 3) : ?>

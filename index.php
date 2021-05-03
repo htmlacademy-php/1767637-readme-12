@@ -7,29 +7,21 @@ $title = 'readme: популярное';
 
 $user_name = 'Ann'; // укажите здесь ваше имя
 
-$sql = 'SELECT * FROM posts p 
-            JOIN users u ON p.author_id = u.id
-            JOIN post_type t ON p.post_type_id = t.id
-            ORDER BY views_number ASC LIMIT 10';
-
 if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
     $sql = "SELECT * FROM posts p 
                 JOIN users u ON p.author_id = u.id
                 JOIN post_type t ON p.post_type_id = t.id
                 WHERE t.name = ?
                 ORDER BY views_number ASC LIMIT 10";
-}
+    $articles = get_result_query($con, $sql, ['post_type' => $_GET['post_type']]);
 
-$stmt = mysqli_prepare($con, $sql);
-if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
-    mysqli_stmt_bind_param($stmt, 's', $_GET['post_type']);
+} else {
+    $sql = 'SELECT * FROM posts p 
+            JOIN users u ON p.author_id = u.id
+            JOIN post_type t ON p.post_type_id = t.id
+            ORDER BY views_number ASC LIMIT 10';
+    $articles = get_result_query($con, $sql);
 }
-mysqli_stmt_execute($stmt);
-$res = mysqli_stmt_get_result($stmt);
-if (!$res) {
-    show_error($con, mysqli_error($res));
-}
-$articles = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
 function crop_text(string $str, int $length = 300): string
 {
