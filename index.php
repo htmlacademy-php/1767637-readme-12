@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 include_once 'init.php';
 include_once 'helpers.php';
@@ -8,17 +7,21 @@ $title = 'readme: популярное';
 
 $user_name = 'Ann'; // укажите здесь ваше имя
 
-$sql = 'SELECT * FROM posts p 
-    JOIN users u ON p.author_id = u.id
-    JOIN post_type t ON p.post_type_id = t.id
-    ORDER BY views_number ASC LIMIT 10';
+if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
+    $sql = "SELECT * FROM posts p 
+                JOIN users u ON p.author_id = u.id
+                JOIN post_type t ON p.post_type_id = t.id
+                WHERE t.name = ?
+                ORDER BY views_number ASC LIMIT 10";
+    $articles = get_result_query($con, $sql, ['post_type' => $_GET['post_type']]);
 
-$result = mysqli_query($con, $sql);
-
-if (!$result) {
-    show_error($con, mysqli_error($result));
+} else {
+    $sql = 'SELECT * FROM posts p 
+            JOIN users u ON p.author_id = u.id
+            JOIN post_type t ON p.post_type_id = t.id
+            ORDER BY views_number ASC LIMIT 10';
+    $articles = get_result_query($con, $sql);
 }
-$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 function crop_text(string $str, int $length = 300): string
 {
@@ -56,6 +59,6 @@ function prepare_card_text(string $input, int $length = 300): string
     return $text;
 }
 
-$main = include_template('main.php', array('articles'=> $posts, 'post_type' => $post_type));
+$main = include_template('main.php', array('articles'=> $articles));
 
 print include_template('layout.php', array('main' => $main, 'user_name' => $user_name,'title' => $title ));
