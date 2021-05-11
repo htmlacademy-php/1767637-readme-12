@@ -2,13 +2,16 @@
 declare(strict_types=1);
 include_once 'init.php';
 include_once 'helpers.php';
+
+require_once __DIR__ . '/vendor/autoload.php';
+
 $is_auth = rand(0, 1);
 $title = 'readme: популярное';
 
 $user_name = 'Ann'; // укажите здесь ваше имя
 
 if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
-    $sql = "SELECT * FROM posts p 
+    $sql = "SELECT * FROM posts p
                 JOIN users u ON p.author_id = u.id
                 JOIN post_type t ON p.post_type_id = t.id
                 WHERE t.name = ?
@@ -16,7 +19,7 @@ if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
     $articles = get_result_query($con, $sql, ['post_type' => $_GET['post_type']]);
 
 } else {
-    $sql = 'SELECT * FROM posts p 
+    $sql = 'SELECT * FROM posts p
             JOIN users u ON p.author_id = u.id
             JOIN post_type t ON p.post_type_id = t.id
             ORDER BY views_number ASC LIMIT 10';
@@ -61,4 +64,4 @@ function prepare_card_text(string $input, int $length = 300): string
 
 $main = include_template('main.php', array('articles'=> $articles));
 
-print include_template('layout.php', array('main' => $main, 'user_name' => $user_name,'title' => $title ));
+print include_template('layout.php', array('main' => $main, 'user_name' => $user_name,'title' => $title, 'is_auth' => $is_auth ));

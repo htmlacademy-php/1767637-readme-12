@@ -1,4 +1,4 @@
-INSERT INTO post_type (name) VALUES ('post-quote'), ('post-text'), ('post-photo'), ('post-link'), ('post-video');
+INSERT INTO post_type (name, title) VALUES ('quote', 'Цитата'), ('text', 'Текст'), ('photo', 'Фото'), ('link', 'Ссылка'), ('video', 'Видео');
 
 INSERT INTO users ( email, login, password, avatar) VALUES ('test.@mail.com', 'Ivan', '12345', ''), ('email.@gmail.com', 'Nina', '123', ''), ('test2.@mail.ru', 'Mike', 'abc', '');
 

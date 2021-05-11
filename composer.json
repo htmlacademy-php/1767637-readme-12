@@ -1,0 +1,13 @@
+{
+    "name": "vendor/php",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ann Docenko",
+            "email": "enn@mail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
