@@ -2,7 +2,7 @@
 declare(strict_types=1);
 include_once 'init.php';
 include_once 'helpers.php';
-include_once 'functions/format_time.php';
+include_once 'functions.php';
 if (!isset($_GET['id']) && empty($_GET['id'])) {
     http_response_code(404);
 }

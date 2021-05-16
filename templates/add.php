@@ -56,7 +56,7 @@ include_once 'functions.php';
                 <div class="adding-post__tab-content">
                     <section class="adding-post__photo tabs__content tabs__content--active">
                         <h2 class="visually-hidden">Форма добавления фото</h2>
-                        <form class="adding-post__form form" action="./add.php" method="post" enctype="multipart/form-data">
+                        <form class="adding-post__form form" action="./add.php" method="POST" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
                                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -103,7 +103,7 @@ include_once 'functions.php';
                             <div class="adding-post__input-file-container form__input-container form__input-container--file">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="userpic-file-photo" title=" ">
+                                        <input type="file" name="file"  class="adding-post__input-file form__input-file" id="userpic-file-photo">
                                         <div class="form__file-zone-text">
                                             <span>Перетащите фото сюда</span>
                                         </div>

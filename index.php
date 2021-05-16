@@ -3,8 +3,6 @@ declare(strict_types=1);
 include_once 'init.php';
 include_once 'helpers.php';
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 $is_auth = rand(0, 1);
 $title = 'readme: популярное';
 

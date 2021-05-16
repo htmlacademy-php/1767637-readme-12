@@ -107,7 +107,7 @@ include_once 'functions.php';
                         <?php elseif ($article['name'] === 'photo') : ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
-                                <img src="/img/<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
+                                <img src="/img<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
                         <?php elseif ($article['name'] === 'link') : ?>
                             <a class="post-link__external" href="http://<?= $article['url'] ?? ''; ?>" title="Перейти по ссылке">
