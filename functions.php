@@ -66,3 +66,36 @@ function getPostVal($name)
 {
     return filter_input(INPUT_POST, $name);
 }
+
+function validateLengthMax($value, $max)
+{
+    if ($value) {
+        $len = strlen($value);
+        if ($len > $max) {
+            return "Значение должно быть до $max символов";
+        }
+    }
+
+    return null;
+}
+
+// function validateRequired($rules) {
+//     if (($rules[$key] == 'required') && empty($_POST[$key])) {
+//         if (
+//             $rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading' || $rules[$key] == 'text-heading' ||
+//             $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading'
+//         ) {
+//             $field = 'Заголовок';
+//         }
+//         if ($rules[$key] == 'video-url' || $rules[$key] == 'post-link') {
+//             $field = 'Ссылка';
+//         }
+//         if ($rules[$key] == 'quote-author') {
+//             $field = 'Автор';
+//         }
+//         if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
+//             $field = 'с Текстом';
+//         }
+//         $errors[$key] = "Поле $field надо заполнить";
+//     }
+// }

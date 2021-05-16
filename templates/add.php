@@ -62,7 +62,7 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
+                                            <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок" value="<?= getPostVal('photo-heading'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -73,7 +73,7 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку">
+                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку" value="<?= getPostVal('photo-url'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -84,7 +84,7 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="photo-tags">Теги</label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-tags" placeholder="Введите теги">
+                                            <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-tags" placeholder="Введите теги" value="<?= getPostVal('photo-tags'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -103,7 +103,7 @@ include_once 'functions.php';
                             <div class="adding-post__input-file-container form__input-container form__input-container--file">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                                        <input type="file" name="file"  class="adding-post__input-file form__input-file" id="userpic-file-photo">
+                                        <input type="file" name="file" class="adding-post__input-file form__input-file" id="userpic-file-photo">
                                         <div class="form__file-zone-text">
                                             <span>Перетащите фото сюда</span>
                                         </div>
@@ -136,7 +136,7 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-heading" type="text" name="video-heading" placeholder="Введите заголовок">
+                                            <input class="adding-post__input form__input" id="video-heading" type="text" name="video-heading" placeholder="Введите заголовок" value="<?= getPostVal('video-heading'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -147,8 +147,8 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-url" type="text" name="video-url" placeholder="Введите ссылку">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="video-url" type="text" name="video-url" placeholder="Введите ссылку" value="<?= getPostVal('video-url'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
@@ -158,8 +158,8 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-tags">Теги</label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-tags" type="text" name="photo-heading" placeholder="Введите ссылку">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="video-tags" type="text" name="video-tags" placeholder="Введите ссылку" value="<?= getPostVal('video-tags'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
@@ -191,8 +191,8 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="text-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="text-heading" type="text" name="text-heading" placeholder="Введите заголовок">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="text-heading" type="text" name="text-heading" placeholder="Введите заголовок" value="<?= getPostVal('text-heading'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
@@ -202,7 +202,7 @@ include_once 'functions.php';
                                     <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="post-text" placeholder="Введите текст публикации"></textarea>
+                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="post-text" placeholder="Введите текст публикации"><?= getPostVal('post-text'); ?></textarea>
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -213,7 +213,7 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="post-tags">Теги</label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="post-tags" type="text" name="post-tags" placeholder="Введите теги">
+                                            <input class="adding-post__input form__input" id="post-tags" type="text" name="post-tags" placeholder="Введите теги" value="<?= getPostVal('post-tags'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -247,7 +247,7 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="quote-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="quote-heading" type="text" name="quote-heading" placeholder="Введите заголовок">
+                                            <input class="adding-post__input form__input" id="quote-heading" type="text" name="quote-heading" placeholder="Введите заголовок" value="<?= getPostVal('quote-heading'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -269,8 +269,8 @@ include_once 'functions.php';
                                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="quote-author" type="text" name="quote-author">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="quote-author" type="text" name="quote-author" value="<?= getPostVal('quote-author'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
@@ -280,8 +280,8 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="cite-tags">Теги</label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="cite-tags" type="text" name="quote-tags" placeholder="Введите теги">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="cite-tags" type="text" name="quote-tags" placeholder="Введите теги" value="<?= getPostVal('quote-tags'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
@@ -314,8 +314,8 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="link-heading" type="text" name="link-heading" placeholder="Введите заголовок">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="link-heading" type="text" name="link-heading" placeholder="Введите заголовок" value="<?= getPostVal('link-heading'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
@@ -336,8 +336,8 @@ include_once 'functions.php';
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="link-tags">Теги</label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="link-tags" type="text" name="link-tags" placeholder="Введите ссылку">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <input class="adding-post__input form__input" id="link-tags" type="text" name="link-tags" placeholder="Введите ссылку" value="<?= getPostVal('link-tags'); ?>">
+                                            <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title">Заголовок сообщения</h3>
                                                 <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>

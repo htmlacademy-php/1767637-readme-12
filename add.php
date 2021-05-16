@@ -10,22 +10,67 @@ $sql = 'SELECT name,title FROM post_type';
 
 $post_types = get_result_query($con, $sql);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST) && !empty($_POST)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $rules = [
+        'photo-heading' => 'required',
+        'video-heading' => 'required' ,
+        'video-url' => 'required',
+        'text-heading' => 'required',
+        'post-text' => 'required',
+        'quote-heading' => 'required',
+        'quote-text' => 'required|lengthMax:70',
+        'quote-author' => 'required',
+        'link-heading' => 'required',
+        'post-link' => 'required',
+    ];
 
-    if (isset($_POST) && !empty($_POST)) {
-        $sql = "SELECT id FROM hashtags  WHERE name ='" . $_POST['photo-tags'] . "'";
-        $hashtag = get_result_query($con, $sql);
-        $id_hashtag = $hashtag[0]['id'];
+    foreach ($_POST as $key => $value) {
+        $field_val = $rules[$key];
+        if (array_key_exists($key, $rules)) {
+            var_dump(stristr($field_val, 'required'));
+            if (stristr($field_val, 'lengthMax') == TRUE) {
+                $val = stristr($rules[$key], 'lengthMax');
+                $max_val = ltrim($val, ':');
+                validateLengthMax($_POST[$key], $max_val);
+            }
 
-        if (empty($id_hashtag)) {
-            $sql = "INSERT INTO hashtags SET name = ?";
-            $data = ['name' => $_POST['photo-tags']];
-            $res = db_get_prepare_stmt($con, $sql, $data);
-            mysqli_stmt_execute($res);
-            $id_hashtag = mysqli_insert_id($con);           
+            if ((stristr($field_val, 'required') == TRUE) && empty($_POST[$key])) {
+                var_dump(stristr($field_val, 'required'));
+                if ($rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading'|| $rules[$key] == 'text-heading'|| 
+                $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading') {
+                    $field = 'Заголовок';
+                }
+                if ($rules[$key] == 'video-url' || $rules[$key] == 'post-link') {
+                    $field = 'Ссылка';
+                }
+                if ($rules[$key] == 'quote-author') {
+                    $field = 'Автор';
+                }
+                if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
+                    $field = 'с Текстом';
+                }
+                
+                $errors[$key] = "Поле $field надо заполнить";
+            }
         }
-        //$author_id = getmyuid();
+    }
+    if(empty($errors)) {
+        $str_tags = trim($_POST['photo-tags']);
+        $tags = explode(" ", $str_tags);
+        foreach ($tags as $tag) {
+            $data = ['name' => $tag];
+            $sql = "SELECT id FROM hashtags  WHERE name = ? ";
+            $hashtag = get_result_query($con, $sql, $data);
+            $id_hashtag = $hashtag[0]['id'];
 
+            if (empty($id_hashtag)) {
+                $sql = "INSERT INTO hashtags SET name = ?";
+
+                $res = db_get_prepare_stmt($con, $sql, $data);
+                mysqli_stmt_execute($res);
+                $id_hashtag = mysqli_insert_id($con);
+            }
+        }
         // insert post
         if ($_POST['post-type'] == 'photo') {
             $sql = "INSERT INTO posts (post_type_id, title, url, image_url, author_id, cat_id, hashtags_id) VALUES ( 3, ?, ?, ?, ?, ?, ?)";
@@ -34,18 +79,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST) && !empty($_POST)) {
                 $file_name = $_FILES['file']['name'];
                 $file_path = __DIR__ . '/uploads/';
                 $file_url = '/uploads/' . $file_name;
-                
                 move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
-                var_dump($_FILES);
-                echo '<br>';
-                var_dump(is_uploaded_file ($_FILES['file']['tmp_name']));
-                echo '<br>';
-                var_dump($_files['file']['error']);
-                exit;
+
+                if (empty($file_url)) {
+                    $photo_url = $_POST['photo-url'];
+                } else {
+                    $photo_url = '';
+                }
             }
+
             $data = [
                 'title' => $_POST['photo-heading'],
-                'url' => $_POST['photo-url'],
+                'url' => $photo_url,
                 'image_url' => $file_url,
                 'author_id' => 1,
                 'cat_id' => $_POST['cat_id'] ?? 1,
@@ -89,42 +134,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST) && !empty($_POST)) {
             ];
         }
 
-       $res = db_get_prepare_stmt($con, $sql, $data);
-       mysqli_stmt_execute($res);
+        $res = db_get_prepare_stmt($con, $sql, $data);
+        mysqli_stmt_execute($res);
 
-       if ($res) {
+        if ($res) {
             $post_id = mysqli_insert_id($con);
             header("Location: /post.php?id=" . $post_id);
-        } else {
-            $content = include_template('error.php');
-        }
+        } 
+    } else {
+        $content = include_template('add.php', array(
+            'post_types' => $post_types,
+            'errors' => $errors
+        ));
+        
     }
 } else {
     $content = include_template('add.php', array(
         'post_types' => $post_types,
-        'errors' => $errors
     ));
 }
-// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//     $required = ['photo-heading', 'video-url', 'video-heading', 'text-heading', 'post-text', 'quote-heading', 'quote-text', 'quote-author', 'link-heading', 'link-heading', 'post-link'];
-
-//     $rules = [
-//         'category_id' => function ($value) use ($cats_ids) {
-//             return validateCategory($value, $cats_ids);
-//         },
-//         'quote-text' => function ($value, $errors) {
-//             return validateLength($value, 70, $errors);
-//         },
-//         'video-url' => function($value) {
-//             return filter_var($value, FILTER_VALIDATE_URL);
-//         },
-//         'photo-url' => function($value) {
-//             return filter_var($value, FILTER_VALIDATE_URL);
-//         },
-//         'userpic-file-photo' => function ($value, $errors) {
-//             return validateFile($value, $errors);
-//         }
-//     ];
-// }
 
 print include_template( 'layout.php', array('main' => $content, 'user_name' => $user_name, 'title' => 'readme: добавление публикации', 'is_auth' => 1));
