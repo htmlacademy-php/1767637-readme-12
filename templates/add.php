@@ -56,76 +56,37 @@ include_once 'functions.php';
                 <div class="adding-post__tab-content">
                     <section class="adding-post__photo tabs__content tabs__content--active">
                         <h2 class="visually-hidden">Форма добавления фото</h2>
-                        <form class="adding-post__form form" action="./add.php" method="POST" enctype="multipart/form-data">
+                        <?php $keys = ['heading', 'image-url', 'tags', 'file-photo']; ?>
+                        <?php //if (!array_diff_key(array_flip($keys), $inputs)): ?>
+                        <form class="adding-post__form form" action="/add.php?tab=photo" method="post" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок" value="<?= getPostVal('photo-heading'); ?>">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку" value="<?= getPostVal('photo-url'); ?>">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-tags">Теги</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-tags" placeholder="Введите теги" value="<?= getPostVal('photo-tags'); ?>">
-                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php $data = ['errors' => $errors, 'input' => $inputs['heading']]; ?>
+                                    <?= include_template('inc/input-text.php', $data) ?>
+
+                                    <?php $data = ['errors' => $errors, 'input' => $inputs['image-url']]; ?>
+                                    <?= include_template('inc/input-text.php', $data) ?>
+
+                                    <?php $data = ['errors' => $errors, 'input' => $inputs['tags']]; ?>
+                                    <?= include_template('inc/input-text.php', $data) ?>
+                                    <input type="hidden" name="content-type" value="photo">
                                 </div>
-                                <div class="form__invalid-block">
-                                    <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                                    <ul class="form__invalid-list">
-                                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-                                    </ul>
-                                </div>
+                                <?php if (!empty($errors)): ?>
+                                    <?php $data = ['errors' => $errors]; ?>
+                                    <?= include_template('inc/invalid-block.php', $data) ?>
+                                <?php endif; ?>
                             </div>
                             <div class="adding-post__input-file-container form__input-container form__input-container--file">
-                                <div class="adding-post__input-file-wrapper form__input-file-wrapper">
-                                    <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                                        <input type="file" name="file" class="adding-post__input-file form__input-file" id="userpic-file-photo">
-                                        <div class="form__file-zone-text">
-                                            <span>Перетащите фото сюда</span>
-                                        </div>
-                                    </div>
-                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button" type="button">
-                                        <span>Выбрать фото</span>
-                                        <svg class="adding-post__attach-icon form__attach-icon" width="10" height="20">
-                                            <use xlink:href="#icon-attach"></use>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="adding-post__file adding-post__file--photo form__file dropzone-previews">
-
-                                </div>
+                                <?= include_template('inc/input-file.php', ['input' => $inputs['file-photo']]) ?>
+                                <div class="adding-post__file adding-post__file--photo form__file dropzone-previews"></div>
                             </div>
-                            <input type="hidden" name="cat_id" value="1">
-                            <input type="hidden" name="post-type" value="photo">
                             <div class="adding-post__buttons">
                                 <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
+                               
                                 <a class="adding-post__close" href="#">Закрыть</a>
                             </div>
                         </form>
+                    <?php //endif; ?>
                     </section>
 
                     <section class="adding-post__video tabs__content">
@@ -135,13 +96,9 @@ include_once 'functions.php';
                                 <div class="form__text-inputs">
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?php isset($errors['video-heading']) ? " form__input-section--error" : ""; ?>">
                                             <input class="adding-post__input form__input" id="video-heading" type="text" name="video-heading" placeholder="Введите заголовок" value="<?= getPostVal('video-heading'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -167,12 +124,10 @@ include_once 'functions.php';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form__invalid-block">
-                                    <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                                    <ul class="form__invalid-list">
-                                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-                                    </ul>
-                                </div>
+                                <?php if (!empty($errors)) : ?>
+                                    <?php $data = ['errors' => $errors]; ?>
+                                    <?= include_template('form/error-text.php', $data) ?>
+                                <?php endif; ?>
                             </div>
                             <input type="hidden" name="cat_id" value="3">
                             <input type="hidden" name="post-type" value="video">
@@ -188,26 +143,18 @@ include_once 'functions.php';
                         <form class="adding-post__form form" action="./add.php" method="post">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
+                                    <div class="adding-post__input-wrapper form__input-wrapper <?php isset($errors['text-heading']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="text-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <input class="adding-post__input form__input" id="text-heading" type="text" name="text-heading" placeholder="Введите заголовок" value="<?= getPostVal('text-heading'); ?>">
                                             <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="adding-post__textarea-wrapper form__textarea-wrapper">
+                                    <div class="adding-post__textarea-wrapper form__textarea-wrapper <?php isset($errors['post-text']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="post-text" placeholder="Введите текст публикации"><?= getPostVal('post-text'); ?></textarea>
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -222,13 +169,10 @@ include_once 'functions.php';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form__invalid-block">
-                                    <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                                    <ul class="form__invalid-list">
-                                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-                                        <li class="form__invalid-item">Цитата. Она не должна превышать 70 знаков.</li>
-                                    </ul>
-                                </div>
+                                <?php if (!empty($errors)) : ?>
+                                    <?php $data = ['errors' => $errors]; ?>
+                                    <?= include_template('form/error-text.php', $data) ?>
+                                <?php endif; ?>
                             </div>
                             <input type="hidden" name="cat_id" value="2">
                             <input type="hidden" name="post-type" value="text">
@@ -244,37 +188,25 @@ include_once 'functions.php';
                         <form class="adding-post__form form" action="../add.php" method="post">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
+                                    <div class="adding-post__input-wrapper form__input-wrapper <?php isset($errors['quote-heading']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="quote-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <input class="adding-post__input form__input" id="quote-heading" type="text" name="quote-heading" placeholder="Введите заголовок" value="<?= getPostVal('quote-heading'); ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="adding-post__input-wrapper form__textarea-wrapper">
+                                    <div class="adding-post__input-wrapper form__textarea-wrapper <?php isset($errors['quote-text']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="quote-text" placeholder="Текст цитаты"></textarea>
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="adding-post__textarea-wrapper form__input-wrapper">
+                                    <div class="adding-post__textarea-wrapper form__input-wrapper <?php isset($errors['quote-author']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <input class="adding-post__input form__input" id="quote-author" type="text" name="quote-author" value="<?= getPostVal('quote-author'); ?>">
                                             <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -289,13 +221,10 @@ include_once 'functions.php';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form__invalid-block">
-                                    <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                                    <ul class="form__invalid-list">
-                                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-                                        <li class="form__invalid-item">Цитата. Она не должна превышать 70 знаков.</li>
-                                    </ul>
-                                </div>
+                                <?php if (!empty($errors)) : ?>
+                                    <?php $data = ['errors' => $errors]; ?>
+                                    <?= include_template('form/error-text.php', $data) ?>
+                                <?php endif; ?>
                             </div>
                             <input type="hidden" name="cat_id" value="3">
                             <input type="hidden" name="post-type" value="quote">
@@ -311,26 +240,18 @@ include_once 'functions.php';
                         <form class="adding-post__form form" action="./add" method="post">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
+                                    <div class="adding-post__input-wrapper form__input-wrapper <?php isset($errors['link-heading']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <input class="adding-post__input form__input" id="link-heading" type="text" name="link-heading" placeholder="Введите заголовок" value="<?= getPostVal('link-heading'); ?>">
                                             <button class=" form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="adding-post__textarea-wrapper form__input-wrapper">
+                                    <div class="adding-post__textarea-wrapper form__input-wrapper <?php isset($errors['post-link']) ? " form__input-section--error" : ""; ?>">
                                         <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
                                             <input class="adding-post__input form__input" id="post-link" type="text" name="post-link">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                                            <div class="form__error-text">
-                                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -345,13 +266,10 @@ include_once 'functions.php';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form__invalid-block">
-                                    <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                                    <ul class="form__invalid-list">
-                                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-                                        <li class="form__invalid-item">Цитата. Она не должна превышать 70 знаков.</li>
-                                    </ul>
-                                </div>
+                                <?php if (!empty($errors)) : ?>
+                                    <?php $data = ['errors' => $errors]; ?>
+                                    <?= include_template('form/error-text.php', $data) ?>
+                                <?php endif; ?>
                             </div>
                             <input type="hidden" name="cat_id" value="1">
                             <input type="hidden" name="post-type" value="link">

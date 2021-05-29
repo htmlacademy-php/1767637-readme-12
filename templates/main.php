@@ -69,7 +69,7 @@ include_once 'functions.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'quote' ? 'filters__button--active' : '' ; ?>" href="?post_type=quote">
+                        <a class="filters__button filters__button--quote button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'quote' ? 'filters__button--active' : ''; ?>" href="?post_type=quote">
                             <span class="visually-hidden">Цитата</span>
                             <svg class="filters__icon" width="21" height="20">
                                 <use xlink:href="#icon-filter-quote"></use>
@@ -77,7 +77,7 @@ include_once 'functions.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'link' ? 'filters__button--active' : '' ; ?>" href="?post_type=link">
+                        <a class="filters__button filters__button--link button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'link' ? 'filters__button--active' : ''; ?>" href="?post_type=link">
                             <span class="visually-hidden">Ссылка</span>
                             <svg class="filters__icon" width="21" height="18">
                                 <use xlink:href="#icon-filter-link"></use>
@@ -88,12 +88,13 @@ include_once 'functions.php';
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($articles as $article) : ?>
-
-                <article class="popular__post post <?= html($article['post_type_id']) ?? ''; ?>">
+            <?php  
+             foreach ($articles as $article) : ?>
+                 <article class="popular__post post <?= html($article['post_type_id']) ?? ''; ?>">
                     <header class="post__header">
                         <h2>
                             <!--здесь заголовок-->
+                           
                             <a href="/post.php?id=<?= $article['id']; ?>"><?= html($article['title']) ?? ''; ?></a>
                         </h2>
                     </header>
@@ -107,7 +108,7 @@ include_once 'functions.php';
                         <?php elseif ($article['name'] === 'photo') : ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
-                                <img src="/img<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
+                                  <img src="<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
                         <?php elseif ($article['name'] === 'link') : ?>
                             <a class="post-link__external" href="http://<?= $article['url'] ?? ''; ?>" title="Перейти по ссылке">

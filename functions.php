@@ -41,12 +41,12 @@ function html($string)
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
-function validateLength($str, int $length =70, array $errors = []) {
-    if(strlen($str) <= $length) {
-        return '';
-    }
-    return $errors['text'] = 'short';
-}
+// function validateLength($str, int $length =70, array $errors = []) {
+//     if(strlen($str) <= $length) {
+//         return '';
+//     }
+//     return $errors['text'] = 'short';
+// }
 
 function validateFile($value, array $errors = []) {
     if (!empty($value['name'])) {
@@ -67,35 +67,99 @@ function getPostVal($name)
     return filter_input(INPUT_POST, $name);
 }
 
-function validateLengthMax($value, $max)
+// function validateLengthMax($value, $max)
+// {
+//     if ($value) {
+//         $len = strlen($value);
+//         if ($len > $max) {
+//             return "Значение должно быть до $max символов";
+//         }
+//     }
+
+//     return null;
+// }
+
+// validate
+function getValidationRules(array $rules): array
 {
-    if ($value) {
-        $len = strlen($value);
-        if ($len > $max) {
-            return "Значение должно быть до $max символов";
-        }
+    $result = [];
+    foreach ($rules as $fieldName => $rule) {
+        $result[$fieldName] = explode('|', $rule);
     }
 
-    return null;
+    return $result;
 }
 
-// function validateRequired($rules) {
-//     if (($rules[$key] == 'required') && empty($_POST[$key])) {
-//         if (
-//             $rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading' || $rules[$key] == 'text-heading' ||
-//             $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading'
-//         ) {
-//             $field = 'Заголовок';
-//         }
-//         if ($rules[$key] == 'video-url' || $rules[$key] == 'post-link') {
-//             $field = 'Ссылка';
-//         }
-//         if ($rules[$key] == 'quote-author') {
-//             $field = 'Автор';
-//         }
-//         if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
-//             $field = 'с Текстом';
-//         }
-//         $errors[$key] = "Поле $field надо заполнить";
-//     }
-// }
+function getValidationMethodName(string $name): string
+{
+    $studlyWords = str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $name)));
+    return "validate{$studlyWords}";
+}
+
+function getValidationNameAndParameters(string $rule): array
+{
+    $nameParams = explode(':', $rule);
+    $parameters = [];
+    $name = $nameParams[0];
+    if (isset($nameParams[1])) {
+        $parameters = explode(',', $nameParams[1]);
+    }
+
+    return [$name, $parameters];
+}
+
+function validateRequired(array $inputArray, string $parameterName): ?string
+{
+    return !array_key_exists($parameterName, $inputArray) ? "Поле $parameterName должно быть заполнено" : null;
+}
+
+function validateString(array $inputArray, string $parameterName): ?string
+{
+    if (!array_key_exists($parameterName, $inputArray)) {
+        return null;
+    }
+
+    return !is_string($inputArray[$parameterName]) ? "Поле $parameterName должно быть строкой" : null;
+}
+
+
+function validateMax(array $inputArray, string $parameterName, int $count): ?string
+{
+    if (!array_key_exists($parameterName, $inputArray)) {
+        return null;
+    }
+
+    return mb_strlen($inputArray[$parameterName]) > $count ? "Поле $parameterName должно быть длиной менее $count символов" : null;
+}
+function crop_text_content(string $text, int $post_id, string $style = '', int $num_letters = 300): string
+{
+    $style = $style ? " style=\"{$style}\"" : '';
+    $text_length = mb_strlen($text);
+
+    if ($text_length > $num_letters) {
+        $words = explode(' ', $text);
+        $result_words_length = 0;
+        $result_words = [];
+
+        foreach ($words as $word) {
+            $result_words_length += mb_strlen($word);
+
+            if ($result_words_length > $num_letters) {
+                break;
+            }
+
+            $result_words_length += 1;
+            $result_words[] = $word;
+        }
+
+        $result = implode(' ', $result_words);
+
+        $result .= '...';
+        $result = "<p{$style}>" . $result . '</p>';
+        $result .= '<a class="post-text__more-link" href="post.php?id=' . $post_id . '">Читать далее</a>';
+    } else {
+        $result = "<p{$style}>" . $text . '</p>';
+    }
+
+    return $result;
+}

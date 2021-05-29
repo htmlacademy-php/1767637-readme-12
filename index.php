@@ -17,9 +17,9 @@ if (isset($_GET['post_type']) && !empty($_GET['post_type'])) {
     $articles = get_result_query($con, $sql, ['post_type' => $_GET['post_type']]);
 
 } else {
-    $sql = 'SELECT * FROM posts p
-            JOIN users u ON p.author_id = u.id
-            JOIN post_type t ON p.post_type_id = t.id
+    $sql = 'SELECT p.id, p.title,  p.content, p.image_url, p.video_url, p.views_number, p.date_create, p.url, u.login, t.name  FROM posts p
+            JOIN users u ON u.id = p.author_id
+           JOIN post_type t ON t.id = p.post_type_id
             ORDER BY views_number ASC LIMIT 10';
     $articles = get_result_query($con, $sql);
 }
