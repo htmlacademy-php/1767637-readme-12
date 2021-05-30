@@ -56,37 +56,73 @@ include_once 'functions.php';
                 <div class="adding-post__tab-content">
                     <section class="adding-post__photo tabs__content tabs__content--active">
                         <h2 class="visually-hidden">Форма добавления фото</h2>
-                        <?php $keys = ['heading', 'image-url', 'tags', 'file-photo']; ?>
-                        <?php //if (!array_diff_key(array_flip($keys), $inputs)): ?>
                         <form class="adding-post__form form" action="/add.php?tab=photo" method="post" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <?php $data = ['errors' => $errors, 'input' => $inputs['heading']]; ?>
-                                    <?= include_template('inc/input-text.php', $data) ?>
-
-                                    <?php $data = ['errors' => $errors, 'input' => $inputs['image-url']]; ?>
-                                    <?= include_template('inc/input-text.php', $data) ?>
-
-                                    <?php $data = ['errors' => $errors, 'input' => $inputs['tags']]; ?>
-                                    <?= include_template('inc/input-text.php', $data) ?>
-                                    <input type="hidden" name="content-type" value="photo">
+                                    <div class="adding-post__input-wrapper form__input-wrapper">
+                                        <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
+                                        <div class="form__input-section">
+                                            <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="adding-post__input-wrapper form__input-wrapper">
+                                        <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
+                                        <div class="form__input-section">
+                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку">
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="adding-post__input-wrapper form__input-wrapper">
+                                        <label class="adding-post__label form__label" for="photo-tags">Теги</label>
+                                        <div class="form__input-section">
+                                            <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-heading" placeholder="Введите теги">
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <?php if (!empty($errors)): ?>
+                                <?php if (!empty($errors)) : ?>
                                     <?php $data = ['errors' => $errors]; ?>
-                                    <?= include_template('inc/invalid-block.php', $data) ?>
+                                    <?= include_template('form/error-text.php', $data) ?>
                                 <?php endif; ?>
                             </div>
                             <div class="adding-post__input-file-container form__input-container form__input-container--file">
-                                <?= include_template('inc/input-file.php', ['input' => $inputs['file-photo']]) ?>
-                                <div class="adding-post__file adding-post__file--photo form__file dropzone-previews"></div>
+                                <div class="adding-post__input-file-wrapper form__input-file-wrapper">
+                                    <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
+                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="file-photo" title=" ">
+                                        <div class="form__file-zone-text">
+                                            <span>Перетащите фото сюда</span>
+                                        </div>
+                                    </div>
+                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button" type="button">
+                                        <span>Выбрать фото</span>
+                                        <svg class="adding-post__attach-icon form__attach-icon" width="10" height="20">
+                                            <use xlink:href="#icon-attach"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="adding-post__file adding-post__file--photo form__file dropzone-previews">
+
+                                </div>
                             </div>
+                            <input type="hidden" name="post-type" value="photo">
                             <div class="adding-post__buttons">
                                 <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
-                               
                                 <a class="adding-post__close" href="#">Закрыть</a>
                             </div>
                         </form>
-                    <?php //endif; ?>
                     </section>
 
                     <section class="adding-post__video tabs__content">
@@ -131,7 +167,7 @@ include_once 'functions.php';
                             </div>
                             <input type="hidden" name="cat_id" value="3">
                             <input type="hidden" name="post-type" value="video">
-                            <div class="adding-post__buttons">
+                             <div class="adding-post__buttons">
                                 <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
                                 <a class="adding-post__close" href="#">Закрыть</a>
                             </div>

@@ -12,21 +12,34 @@ $post_types = get_result_query($con, $sql);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
    
-    $postarray = $_POST;
-    var_dump($postarray);
-
-    $rules = [
-        'photo-heading' => 'required',
-        'video-heading' => 'required' ,
-        'video-url' => 'required',
-        'text-heading' => 'required',
-        'post-text' => 'required',
-        'quote-heading' => 'required',
-        'quote-text' => 'required',
-        'quote-author' => 'required',
-        'link-heading' => 'required',
-        'post-link' => 'required',
-    ];
+    if ($_POST['post-type'] == 'photo') {
+        $rules = [
+            'photo-heading' => 'required',
+            'file-photo' => 'file',
+            'photo-url' => 'url'
+        ];
+    } elseif($_POST['post-type'] == 'video') {
+        $rules = [
+            'video-heading' => 'required',
+            'video-url' => 'required|valid',
+        ];
+    } elseif ($_POST['post-type'] == 'text') {
+        $rules = [
+            'text-heading' => 'required',
+            'post-text' => 'required|max:70',
+        ];
+    }  elseif($_POST['post-type'] == 'link') {
+        $rules = [
+            'link-heading' => 'required',
+            'post-link' => 'required',
+        ];
+    } elseif ($_POST['post-type'] == 'quote') {
+        $rules = [
+            'quote-heading' => 'required',
+            'quote-text' => 'required',
+            'quote-author' => 'required',
+        ];
+    }
 
     $validations = getValidationRules($rules);
     $errors = [];
@@ -43,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $validationResult = call_user_func_array($methodName, $methodParameters);
-            // echo '<pre>';
-            // var_dump([$name, $parameters]);
-            // echo '</pre>';
-            // exit;
+            echo '<pre>';
+            var_dump([$name, $parameters]);
+            echo '</pre>';
+            exit;
 
             if ($validationResult !== null) {
                 $errors[] = $validationResult;
