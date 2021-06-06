@@ -41,13 +41,6 @@ function html($string)
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
 
-// function validateLength($str, int $length =70, array $errors = []) {
-//     if(strlen($str) <= $length) {
-//         return '';
-//     }
-//     return $errors['text'] = 'short';
-// }
-
 function dd(... $args) {
     var_dump($args);
     die();
@@ -56,7 +49,7 @@ function dd(... $args) {
 function validateFile(array $inputArray, string $parameterName): ?string
 {
     if (!$inputArray[$parameterName] || $inputArray[$parameterName]['error'] !== 0 || $inputArray[$parameterName]['tmp_name'] === '') {
-        return "Файл $parameterName не существует или загружен с ошибкой";
+        return 'file-photo';
     }
 
     $tmp_name = $inputArray[$parameterName]['tmp_name'] ;
@@ -129,7 +122,7 @@ function getValidationNameAndParameters(string $rule): array
 
 function validateRequired(array $inputArray, string $parameterName): ?string
 {
-    return !array_key_exists($parameterName, $inputArray) ? "Поле $parameterName должно быть заполнено" : null;
+    return array_key_exists($parameterName, $inputArray) ? $parameterName : null;
 }
 
 function validateString(array $inputArray, string $parameterName): ?string
@@ -138,17 +131,18 @@ function validateString(array $inputArray, string $parameterName): ?string
         return null;
     }
 
-    return !is_string($inputArray[$parameterName]) ? "Поле $parameterName должно быть строкой" : null;
+    return is_string($inputArray[$parameterName]) ? $parameterName : null;
 }
 
 
-function validateMax(array $inputArray, string $parameterName, int $count): ?string
+function validateMax(array $inputArray, string $parameterName, $count = '70'): ?string
 {
+    $count = (int) $count;
     if (!array_key_exists($parameterName, $inputArray)) {
         return null;
     }
 
-    return mb_strlen($inputArray[$parameterName]) > $count ? "Поле $parameterName должно быть длиной менее $count символов" : null;
+    return mb_strlen($inputArray[$parameterName]) > $count ? 'text-count' : null;
 }
 function crop_text_content(string $text, int $post_id, string $style = '', int $num_letters = 300): string
 {

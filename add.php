@@ -21,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif($_POST['post-type'] == 'video') {
         $rules = [
             'video-heading' => 'required',
-            'video-url' => 'required|valid',
+            'video-url' => 'required|url',
         ];
     } elseif ($_POST['post-type'] == 'text') {
         $rules = [
             'text-heading' => 'required',
-            'post-text' => 'required|max:70',
+            'post-text' => 'required',
         ];
     }  elseif($_POST['post-type'] == 'link') {
         $rules = [
@@ -36,87 +36,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($_POST['post-type'] == 'quote') {
         $rules = [
             'quote-heading' => 'required',
-            'quote-text' => 'required',
+            'quote-text' => 'required|max:70',
             'quote-author' => 'required',
         ];
     }
 
     $validations = getValidationRules($rules);
-    $errors = [];
     foreach ($validations as $field => $rules) {
 
         foreach ($rules as $rule) {
             [$name, $parameters] = getValidationNameAndParameters($rule);
             $methodName = getValidationMethodName($name);
-<<<<<<< HEAD
-            $methodParameters = array_merge([$_POST, $field], $parameters);
-=======
             $request = array_merge($_POST, $_FILES);
             $methodParameters = array_merge([$request, $field], $parameters);
->>>>>>> a6f570049887e3f6b2adeacbc81c1d91ab42e6b5
 
             if (!assert(function_exists($methodName), "Метод $methodName не найден")) {
                 echo "Функция $methodName не найдена";
                 die();
             }
-
             $validationResult = call_user_func_array($methodName, $methodParameters);
-<<<<<<< HEAD
-        
-=======
-//            echo '<pre>';
-//            var_dump([$name, $parameters]);
-//            echo '</pre>';
-//            exit;
->>>>>>> a6f570049887e3f6b2adeacbc81c1d91ab42e6b5
 
             if ($validationResult !== null) {
                 $errors[] = $validationResult;
             }
         }
     }
-<<<<<<< HEAD
 
-=======
-//
-//    echo '<pre>';
-//    var_dump($errors);
-//     echo '</pre>';
-    // exit;
-
-    // foreach ($_POST as $key => $value) {
-    //     $field_val = $rules[$key];
-    //     if (array_key_exists($key, $rules)) {
-
-    //         if (stristr($field_val, 'lengthMax') == TRUE) {
-    //             $val = stristr($rules[$key], 'lengthMax');
-    //             $max_val = ltrim($val, ':');
-    //             validateLengthMax($_POST[$key], $max_val);
-    //         }
-
-    //         if ((stristr($field_val, 'required') == TRUE) && empty($_POST[$key])) {
-    //             var_dump(stristr($field_val, 'required'));
-    //             if ($rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading'|| $rules[$key] == 'text-heading'||
-    //             $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading') {
-    //                 $field = 'Заголовок';
-    //             }
-    //             if ($rules[$key] == 'video-url' || $rules[$key] == 'post-link') {
-    //                 $field = 'Ссылка';
-    //             }
-    //             if ($rules[$key] == 'quote-author') {
-    //                 $field = 'Автор';
-    //             }
-    //             if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
-    //                 $field = 'с Текстом';
-    //             }
-
-    //             $errors[$key] = "Поле $field надо заполнить";
-    //         }
-    //     }
-    // }
->>>>>>> a6f570049887e3f6b2adeacbc81c1d91ab42e6b5
     if(empty($errors)) {
-        $str_tags = trim($_POST['photo-tags']);
+        $str_tags = '';
+        if($_POST['photo-tags']) {
+            $str_tags = trim($_POST['photo-tags']);
+        }
+        if ($_POST['video-tags']) {
+            $str_tags = trim($_POST['video-tags']);
+        }
+        if ($_POST['link-tags']) {
+            $str_tags = trim($_POST['link-tags']);
+        }
+        if ($_POST['text-tags']) {
+            $str_tags = trim($_POST['text-tags']);
+        }
+        if ($_POST['quote-tags']) {
+            $str_tags = trim($_POST['quote-tags']);
+        }
+
         $tags = explode(" ", $str_tags);
         foreach ($tags as $tag) {
             $data = ['name' => $tag];
