@@ -48,18 +48,37 @@ function html($string)
 //     return $errors['text'] = 'short';
 // }
 
-function validateFile($value, array $errors = []) {
-    if (!empty($value['name'])) {
-        $tmp_name = $value['tmp_name'];
+function dd(... $args) {
+    var_dump($args);
+    die();
+}
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== "image/gif" || $file_type !== "image/png" || $file_type !== "image/jpeg") {
-            return $errors['file'] = 'error';
-        } 
+function validateFile(array $inputArray, string $parameterName): ?string
+{
+    if (!$inputArray[$parameterName] || $inputArray[$parameterName]['error'] !== 0 || $inputArray[$parameterName]['tmp_name'] === '') {
+        return "Файл $parameterName не существует или загружен с ошибкой";
     }
-    
-    return  $errors['file'] = 'empty';
+
+    $tmp_name = $inputArray[$parameterName]['tmp_name'] ;
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $file_type = finfo_file($finfo, $tmp_name);
+
+    if ($file_type !== "image/gif" && $file_type !== "image/png" && $file_type !== "image/jpeg") {
+        return "Тип файла $parameterName должен быть gif, png или jpeg";
+    }
+
+    return null;
+}
+
+function validateUrl(array $inputArray, string $parameterName): ?string
+{
+    if (!isset($inputArray[$parameterName]) || empty($inputArray[$parameterName])) {
+        return null;
+    }
+
+    return filter_var($inputArray[$parameterName], FILTER_VALIDATE_URL) === false ?
+        "Поле $parameterName должно быть валидным url адресом" : null;
 }
 
 function getPostVal($name)

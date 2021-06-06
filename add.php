@@ -11,7 +11,7 @@ $sql = 'SELECT name,title FROM post_type';
 $post_types = get_result_query($con, $sql);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-   
+
     if ($_POST['post-type'] == 'photo') {
         $rules = [
             'photo-heading' => 'required',
@@ -48,7 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($rules as $rule) {
             [$name, $parameters] = getValidationNameAndParameters($rule);
             $methodName = getValidationMethodName($name);
+<<<<<<< HEAD
             $methodParameters = array_merge([$_POST, $field], $parameters);
+=======
+            $request = array_merge($_POST, $_FILES);
+            $methodParameters = array_merge([$request, $field], $parameters);
+>>>>>>> a6f570049887e3f6b2adeacbc81c1d91ab42e6b5
 
             if (!assert(function_exists($methodName), "Метод $methodName не найден")) {
                 echo "Функция $methodName не найдена";
@@ -56,14 +61,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $validationResult = call_user_func_array($methodName, $methodParameters);
+<<<<<<< HEAD
         
+=======
+//            echo '<pre>';
+//            var_dump([$name, $parameters]);
+//            echo '</pre>';
+//            exit;
+>>>>>>> a6f570049887e3f6b2adeacbc81c1d91ab42e6b5
 
             if ($validationResult !== null) {
                 $errors[] = $validationResult;
             }
         }
     }
+<<<<<<< HEAD
 
+=======
+//
+//    echo '<pre>';
+//    var_dump($errors);
+//     echo '</pre>';
+    // exit;
+
+    // foreach ($_POST as $key => $value) {
+    //     $field_val = $rules[$key];
+    //     if (array_key_exists($key, $rules)) {
+
+    //         if (stristr($field_val, 'lengthMax') == TRUE) {
+    //             $val = stristr($rules[$key], 'lengthMax');
+    //             $max_val = ltrim($val, ':');
+    //             validateLengthMax($_POST[$key], $max_val);
+    //         }
+
+    //         if ((stristr($field_val, 'required') == TRUE) && empty($_POST[$key])) {
+    //             var_dump(stristr($field_val, 'required'));
+    //             if ($rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading'|| $rules[$key] == 'text-heading'||
+    //             $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading') {
+    //                 $field = 'Заголовок';
+    //             }
+    //             if ($rules[$key] == 'video-url' || $rules[$key] == 'post-link') {
+    //                 $field = 'Ссылка';
+    //             }
+    //             if ($rules[$key] == 'quote-author') {
+    //                 $field = 'Автор';
+    //             }
+    //             if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
+    //                 $field = 'с Текстом';
+    //             }
+
+    //             $errors[$key] = "Поле $field надо заполнить";
+    //         }
+    //     }
+    // }
+>>>>>>> a6f570049887e3f6b2adeacbc81c1d91ab42e6b5
     if(empty($errors)) {
         $str_tags = trim($_POST['photo-tags']);
         $tags = explode(" ", $str_tags);
@@ -150,13 +201,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($res) {
             $post_id = mysqli_insert_id($con);
             header("Location: /post.php?id=" . $post_id);
-        } 
+        }
     } else {
         $content = include_template('add.php', array(
             'post_types' => $post_types,
             'errors' => $errors
         ));
-        
+
     }
 } else {
     $content = include_template('add.php', array(
@@ -166,8 +217,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ));
 }
 
-print include_template( 'layout.php', array('main' => $content, 
-                                            'user_name' => $user_name, 
-                                            'title' => 'readme: добавление публикации', 
-                                            'is_auth' => 1, 
+print include_template( 'layout.php', array('main' => $content,
+                                            'user_name' => $user_name,
+                                            'title' => 'readme: добавление публикации',
+                                            'is_auth' => 1,
                                             ));
