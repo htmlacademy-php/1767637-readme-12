@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($rules as $rule) {
             [$name, $parameters] = getValidationNameAndParameters($rule);
             $methodName = getValidationMethodName($name);
-            $methodParameters = array_merge([$postarray, $field], $parameters);
+            $methodParameters = array_merge([$_POST, $field], $parameters);
 
             if (!assert(function_exists($methodName), "Метод $methodName не найден")) {
                 echo "Функция $methodName не найдена";
@@ -56,10 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $validationResult = call_user_func_array($methodName, $methodParameters);
-            echo '<pre>';
-            var_dump([$name, $parameters]);
-            echo '</pre>';
-            exit;
+        
 
             if ($validationResult !== null) {
                 $errors[] = $validationResult;
@@ -67,41 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    echo '<pre>';
-    var_dump($errors);
-     echo '</pre>';
-    // exit;
-
-    // foreach ($_POST as $key => $value) {
-    //     $field_val = $rules[$key];
-    //     if (array_key_exists($key, $rules)) {
-
-    //         if (stristr($field_val, 'lengthMax') == TRUE) {
-    //             $val = stristr($rules[$key], 'lengthMax');
-    //             $max_val = ltrim($val, ':');
-    //             validateLengthMax($_POST[$key], $max_val);
-    //         }
-
-    //         if ((stristr($field_val, 'required') == TRUE) && empty($_POST[$key])) {
-    //             var_dump(stristr($field_val, 'required'));
-    //             if ($rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading'|| $rules[$key] == 'text-heading'|| 
-    //             $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading') {
-    //                 $field = 'Заголовок';
-    //             }
-    //             if ($rules[$key] == 'video-url' || $rules[$key] == 'post-link') {
-    //                 $field = 'Ссылка';
-    //             }
-    //             if ($rules[$key] == 'quote-author') {
-    //                 $field = 'Автор';
-    //             }
-    //             if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
-    //                 $field = 'с Текстом';
-    //             }
-                
-    //             $errors[$key] = "Поле $field надо заполнить";
-    //         }
-    //     }
-    // }
     if(empty($errors)) {
         $str_tags = trim($_POST['photo-tags']);
         $tags = explode(" ", $str_tags);
