@@ -11,7 +11,7 @@ $sql = 'SELECT name,title FROM post_type';
 $post_types = get_result_query($con, $sql);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-   
+
     if ($_POST['post-type'] == 'photo') {
         $rules = [
             'photo-heading' => 'required',
@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($rules as $rule) {
             [$name, $parameters] = getValidationNameAndParameters($rule);
             $methodName = getValidationMethodName($name);
-            $methodParameters = array_merge([$postarray, $field], $parameters);
+            $request = array_merge($_POST, $_FILES);
+            $methodParameters = array_merge([$request, $field], $parameters);
 
             if (!assert(function_exists($methodName), "Метод $methodName не найден")) {
                 echo "Функция $methodName не найдена";
@@ -56,20 +57,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $validationResult = call_user_func_array($methodName, $methodParameters);
-            echo '<pre>';
-            var_dump([$name, $parameters]);
-            echo '</pre>';
-            exit;
+//            echo '<pre>';
+//            var_dump([$name, $parameters]);
+//            echo '</pre>';
+//            exit;
 
             if ($validationResult !== null) {
                 $errors[] = $validationResult;
             }
         }
     }
-
-    echo '<pre>';
-    var_dump($errors);
-     echo '</pre>';
+//
+//    echo '<pre>';
+//    var_dump($errors);
+//     echo '</pre>';
     // exit;
 
     // foreach ($_POST as $key => $value) {
@@ -84,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     //         if ((stristr($field_val, 'required') == TRUE) && empty($_POST[$key])) {
     //             var_dump(stristr($field_val, 'required'));
-    //             if ($rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading'|| $rules[$key] == 'text-heading'|| 
+    //             if ($rules[$key] == 'photo-heading' || $rules[$key] == 'video-heading'|| $rules[$key] == 'text-heading'||
     //             $rules[$key] == 'quote-heading' || $rules[$key] == 'link-heading') {
     //                 $field = 'Заголовок';
     //             }
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //             if ($rules[$key] == 'post-text' || $rules[$key] == 'quote-text') {
     //                 $field = 'с Текстом';
     //             }
-                
+
     //             $errors[$key] = "Поле $field надо заполнить";
     //         }
     //     }
@@ -188,13 +189,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($res) {
             $post_id = mysqli_insert_id($con);
             header("Location: /post.php?id=" . $post_id);
-        } 
+        }
     } else {
         $content = include_template('add.php', array(
             'post_types' => $post_types,
             'errors' => $errors
         ));
-        
+
     }
 } else {
     $content = include_template('add.php', array(
@@ -204,8 +205,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ));
 }
 
-print include_template( 'layout.php', array('main' => $content, 
-                                            'user_name' => $user_name, 
-                                            'title' => 'readme: добавление публикации', 
-                                            'is_auth' => 1, 
+print include_template( 'layout.php', array('main' => $content,
+                                            'user_name' => $user_name,
+                                            'title' => 'readme: добавление публикации',
+                                            'is_auth' => 1,
                                             ));
