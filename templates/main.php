@@ -1,6 +1,5 @@
 <?php
-include_once 'functions/format_time.php';
-include_once 'functions/htmlspecialchars.php';
+include_once 'functions.php';
 ?>
 <section class="page__main page__main--popular">
     <div class="container">
@@ -46,7 +45,7 @@ include_once 'functions/htmlspecialchars.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-photo' ? 'filters__button--active' : ''; ?>" href="?post_type=post-photo">
+                        <a class="filters__button filters__button--photo button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'photo' ? 'filters__button--active' : ''; ?>" href="?post_type=photo">
                             <span class="visually-hidden">Фото</span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-photo"></use>
@@ -54,7 +53,7 @@ include_once 'functions/htmlspecialchars.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-video' ? 'filters__button--active' : ''; ?>" href="?post_type=post-video">
+                        <a class="filters__button filters__button--video button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'video' ? 'filters__button--active' : ''; ?>" href="?post_type=video">
                             <span class="visually-hidden">Видео</span>
                             <svg class="filters__icon" width="24" height="16">
                                 <use xlink:href="#icon-filter-video"></use>
@@ -62,7 +61,7 @@ include_once 'functions/htmlspecialchars.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-text' ? 'filters__button--active' : ''; ?>" href="?post_type=post-text">
+                        <a class="filters__button filters__button--text button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'text' ? 'filters__button--active' : ''; ?>" href="?post_type=text">
                             <span class="visually-hidden">Текст</span>
                             <svg class="filters__icon" width="20" height="21">
                                 <use xlink:href="#icon-filter-text"></use>
@@ -70,7 +69,7 @@ include_once 'functions/htmlspecialchars.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-quote' ? 'filters__button--active' : '' ; ?>" href="?post_type=post-quote">
+                        <a class="filters__button filters__button--quote button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'quote' ? 'filters__button--active' : ''; ?>" href="?post_type=quote">
                             <span class="visually-hidden">Цитата</span>
                             <svg class="filters__icon" width="21" height="20">
                                 <use xlink:href="#icon-filter-quote"></use>
@@ -78,7 +77,7 @@ include_once 'functions/htmlspecialchars.php';
                         </a>
                     </li>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'post-link' ? 'filters__button--active' : '' ; ?>" href="?post_type=post-link">
+                        <a class="filters__button filters__button--link button <?= isset($_GET['post_type']) && $_GET['post_type'] === 'link' ? 'filters__button--active' : ''; ?>" href="?post_type=link">
                             <span class="visually-hidden">Ссылка</span>
                             <svg class="filters__icon" width="21" height="18">
                                 <use xlink:href="#icon-filter-link"></use>
@@ -89,28 +88,29 @@ include_once 'functions/htmlspecialchars.php';
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($articles as $article) : ?>
-
-                <article class="popular__post post <?= html($article['post_type_id']) ?? ''; ?>">
+            <?php  
+             foreach ($articles as $article) : ?>
+                 <article class="popular__post post <?= html($article['post_type_id']) ?? ''; ?>">
                     <header class="post__header">
                         <h2>
                             <!--здесь заголовок-->
+                           
                             <a href="/post.php?id=<?= $article['id']; ?>"><?= html($article['title']) ?? ''; ?></a>
                         </h2>
                     </header>
                     <div class="post__main">
                         <!--здесь содержимое карточки-->
-                        <?php if ($article['name'] === 'post-text') : ?>
+                        <?php if ($article['name'] === 'text') : ?>
                             <p>
                                 <!--здесь текст-->
                                 <?= prepare_card_text($article['content'] ?? ''); ?>
                             </p>
-                        <?php elseif ($article['name'] === 'post-photo') : ?>
+                        <?php elseif ($article['name'] === 'photo') : ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
-                                <img src="/img/<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
+                                  <img src="<?= $article['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
-                        <?php elseif ($article['name'] === 'post-link') : ?>
+                        <?php elseif ($article['name'] === 'link') : ?>
                             <a class="post-link__external" href="http://<?= $article['url'] ?? ''; ?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
                                     <div class="post-link__icon-wrapper">
@@ -122,7 +122,7 @@ include_once 'functions/htmlspecialchars.php';
                                     <?= html($article['content']) ?? ''; ?>
                                 </span>
                             </a>
-                        <?php elseif ($article['name'] === 'post-quote') : ?>
+                        <?php elseif ($article['name'] === 'quote') : ?>
                             <blockquote>
                                 <p>
                                     <!--здесь ссылка-->

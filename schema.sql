@@ -20,8 +20,8 @@ CREATE TABLE `category`
 CREATE TABLE `post_type`
 (
     `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR (100) NOT NULL
-
+    `name` VARCHAR (100) NOT NULL,
+    `title` VARCHAR (100) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `hashtags`

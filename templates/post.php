@@ -1,9 +1,9 @@
 <?php
-include_once 'functions/format_time.php';
-include_once 'functions/htmlspecialchars.php';
+include_once 'functions.php';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -184,7 +184,7 @@ include_once 'functions/htmlspecialchars.php';
                     <div class="post-details__main-block post post--details">
                         <?php if (isset($post['image_url']) && !empty($post['image_url'])) : ?>
                             <div class="post-details__image-wrapper post-photo__image-wrapper">
-                                <img src="/img/<?= $post['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="760" height="507">
+                                <img src="<?= $post['image_url'] ?? ''; ?>" alt="Фото от пользователя" width="760" height="507">
                             </div>
                         <?php endif; ?>
                         <div class="post__indicators">
